@@ -1,38 +1,795 @@
+/* =================== GLOBAL - CYBERPUNK VIBE =================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Electrolize', sans-serif; /* A more tech-y font */
+  /* Background image added */
+  background: 
+    linear-gradient(135deg, rgba(13, 26, 42, 0.95), rgba(26, 47, 64, 0.95), rgba(42, 71, 93, 0.95)), /* Darker overlay for readability */
+    url('https://source.unsplash.com/random/1920x1080/?abstract,tech,cyberpunk') no-repeat center center fixed; /* Placeholder image */
+  background-size: cover;
+  color: #e0e0e0; /* Softer white for readability */
+  scroll-behavior: smooth;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  perspective: 1000px; /* For 3D transformations */
+}
+
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  padding: 60px 30px; /* More padding */
   min-height: 100vh;
+  background: linear-gradient(135deg, rgba(18, 24, 39, 0.85) 0%, rgba(28, 40, 58, 0.85) 100%); /* Darker, more intense gradient with transparency */
+  color: #ffffff;
+  backdrop-filter: blur(8px); /* Increased blur for stronger glass effect */
+  animation: neon-flicker-in 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; /* More dramatic entrance */
+  position: relative;
+  overflow: hidden; /* For potential background effects */
+  z-index: 1; /* Ensure App content is above global background effects */
+}
+
+/* Background grid overlay */
+.App::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(to right, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 25px 25px; /* Adjust grid density */
+    z-index: 0; /* Keep behind App content */
+    opacity: 0.1;
+    animation: grid-pulse 10s infinite alternate;
+    pointer-events: none; /* Crucial: ensures this overlay doesn't block clicks */
+}
+
+/* =================== NAVIGATION - HYPERLINK =================== */
+nav {
+  margin-bottom: 60px; /* More spacing */
+  position: relative; /* Ensure z-index works relative to other nav elements */
+  z-index: 10; /* Ensure nav is above most content */
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Align items vertically */
+  gap: 35px; /* Increased gap */
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #00eaff; /* Brighter blue-cyan */
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 1.2px; /* Tighter letter spacing */
+  font-size: 1.15rem; /* Slightly larger */
+  position: relative;
+  transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+  text-transform: uppercase; /* All caps for impact */
+  padding: 5px 0; /* Add padding for better hover area */
+  z-index: 1; /* Ensure link text is above its pseudo-element if any conflict */
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 3px; /* Thicker underline */
+  bottom: -8px; /* Lower position */
+  left: 0;
+  background-color: #00ffaa; /* Neon green */
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.6); /* Glowing underline */
+  transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+  z-index: 0; /* Ensure pseudo-element is behind the link text */
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+nav a:hover {
+  color: #00ffdd; /* Brighter neon green on hover */
+  text-shadow: 0 0 10px #00ffdd, 0 0 20px #00ffdd; /* More intense glow */
+  transform: scale(1.05); /* Slight scale on hover */
+}
+
+/* Call to Action Button (Logout button specifically) */
+nav button {
+  background: linear-gradient(45deg, #ff3366, #ff8833); /* More fiery gradient */
+  color: #fff;
+  border: none;
+  padding: 14px 28px; /* Larger button */
+  border-radius: 18px; /* More rounded */
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 8px 30px rgba(255, 51, 102, 0.7); /* Stronger, more colorful shadow */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; /* Bouncier effect */
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative; /* Needed for z-index to work */
+  z-index: 11; /* Make sure button is above nav links and their pseudo-elements */
+  pointer-events: auto; /* Explicitly ensure pointer events are enabled */
+}
+
+nav button:hover {
+  transform: scale(1.15); /* More pronounced scale */
+  background: linear-gradient(45deg, #ff0044, #ff6600); /* Even more intense gradient */
+  box-shadow: 0 10px 40px rgba(255, 0, 68, 0.8); /* Deeper shadow */
+}
+
+/* =================== CONTAINERS - GLASS EFFECT =================== */
+.upload-container,
+.form-container,
+.quiz-container,
+.login-container,
+.register-container {
+  max-width: 750px; /* Slightly wider */
+  margin: 50px auto; /* More margin */
+  background: rgba(255, 255, 255, 0.03); /* More transparent background */
+  border: 1px solid rgba(0, 255, 255, 0.2); /* Neon border */
+  backdrop-filter: blur(20px) saturate(1.8); /* Stronger blur and saturation */
+  padding: 45px; /* More padding */
+  border-radius: 25px; /* More rounded corners */
+  box-shadow: 0 12px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 255, 255, 0.3); /* Deeper shadow with neon glow */
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.5s ease-in-out;
+  position: relative; /* For inner elements */
+  overflow: hidden; /* To contain inner glows */
+  z-index: 5; /* Ensure containers are above general app background but below nav */
+}
+
+.upload-container:hover,
+.form-container:hover,
+.quiz-container:hover,
+.login-container:hover,
+.register-container:hover {
+  transform: translateY(-15px) scale(1.02); /* More lift and slight scale */
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 255, 255, 0.5); /* Even deeper shadow and glow */
+}
+
+/* Inner glow effect for containers */
+.upload-container::before,
+.form-container::before,
+.quiz-container::before,
+.login-container::before,
+.register-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(0, 255, 255, 0.15) 0%, transparent 70%);
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none; /* Ensures this glow doesn't block clicks on content inside container */
+    z-index: -1; /* Keep behind container content */
+}
+
+.upload-container:hover::before,
+.form-container:hover::before,
+.quiz-container:hover::before,
+.login-container:hover::before,
+.register-container:hover::before {
+    opacity: 1;
+}
+
+/* =================== FORM ELEMENTS - SLEEK & RESPONSIVE =================== */
+input[type="file"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  width: calc(100% - 36px); /* Account for padding */
+  padding: 16px 18px; /* Larger padding */
+  margin-bottom: 25px; /* More spacing */
+  border-radius: 12px; /* More rounded */
+  font-size: 1.05em;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+  color: #e0e0e0;
+  border: 2px solid rgba(0, 255, 255, 0.3); /* Subtle neon border */
+  box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.1); /* Inner shadow */
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 1; /* Ensure input fields are clickable */
+  position: relative; /* Needed for z-index to work */
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    background: linear-gradient(90deg, #007bff, #00d4ff);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: all 0.3s ease;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background: linear-gradient(90deg, #0056b3, #00aaff);
+    transform: scale(1.05);
+}
+
+input[type="file"]:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  border-color: #00ffff; /* Brighter neon on focus */
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.3); /* Stronger glow */
+  background-color: rgba(255, 255, 255, 0.15); /* Slightly less transparent */
+}
+
+textarea {
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 120px;
+}
+
+/* =================== BUTTONS - NEON POWER =================== */
+/* General button styling, applied to all buttons unless overridden */
+button {
+  background: linear-gradient(90deg, #00aaff, #00eaff); /* Brighter, more energetic blue gradient */
+  font-weight: bold;
+  color: #1a1a1a; /* Darker text for contrast */
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(0, 234, 255, 0.5); /* Stronger shadow with neon blue */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 16px 20px; /* Consistent padding */
+  font-size: 1.1em;
+  position: relative; /* Crucial for z-index to work */
+  z-index: 2; /* Ensure all buttons are clickable by being on a higher layer */
+  pointer-events: auto; /* Explicitly enable pointer events */
+}
+
+button:hover {
+  background: linear-gradient(90deg, #00cfff, #00ffff); /* Even brighter on hover */
+  transform: translateY(-5px) scale(1.03); /* Lift and slight scale */
+  box-shadow: 0 12px 35px rgba(0, 255, 255, 0.7); /* Deeper, more intense glow */
+}
+
+button:disabled {
+  background: linear-gradient(90deg, #4b525a, #6c757d);
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+  box-shadow: none;
+  pointer-events: none; /* Disable clicks when disabled */
+}
+
+/* =================== ERROR - CRITICAL ALERT =================== */
+.error {
+  color: #ff3366; /* Hot pink */
+  font-size: 1.05em;
+  font-weight: 700;
+  background: rgba(255, 51, 102, 0.15); /* Semi-transparent hot pink background */
+  padding: 15px;
+  border-left: 6px solid #ff0044; /* Thicker, intense red border */
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(255, 0, 68, 0.4); /* Glow around the error */
+  animation: shake 0.5s ease-in-out; /* Add a subtle shake effect */
+  position: relative; /* Ensure it stays in its flow */
+  z-index: 3; /* Above general content */
+}
+
+/* =================== QUIZ - INTERACTIVE INTERFACE =================== */
+.quiz-title {
+  font-size: 3rem; /* Larger title */
+  font-weight: bold;
+  color: #00ffdd; /* Bright neon green */
+  margin-bottom: 35px;
+  text-align: center;
+  animation: neon-text-glow 2s infinite alternate, fade-in 1s ease; /* Glowing text */
+  text-shadow: 0 0 10px #00ffdd, 0 0 20px #00ffdd;
+}
+
+.quiz-input-section,
+.quiz-question-section,
+.quiz-results-section {
+  animation: slide-in-bottom 0.7s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; /* Smoother, bouncier slide */
+}
+
+.quiz-textarea {
+  width: calc(100% - 36px);
+  padding: 16px 18px;
+  border: 2px solid rgba(0, 255, 229, 0.3);
+  border-radius: 12px;
+  font-size: 1.05rem;
+  resize: vertical;
+  transition: all 0.4s ease;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+  box-shadow: inset 0 0 8px rgba(0, 255, 229, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.quiz-textarea:focus {
+  outline: none;
+  border-color: #00ffdd;
+  box-shadow: 0 0 15px rgba(0, 255, 229, 0.6), inset 0 0 10px rgba(0, 255, 229, 0.3);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.quiz-button,
+.quiz-start-button,
+.quiz-next-button,
+.quiz-new-quiz-button {
+  /* Inherits general button styles, but can be overridden here if needed */
+  padding: 16px 25px; /* slightly different padding */
+  z-index: 2; /* Explicit z-index for quiz buttons */
+}
+
+.quiz-start-button {
+  animation: pulse-neon 2s infinite ease-in-out; /* More defined pulse */
+}
+
+.quiz-question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2); /* Subtle separator */
+  position: relative;
+  z-index: 1;
+}
+
+.quiz-question-title {
+  font-size: 1.9rem; /* Larger question title */
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.quiz-timer {
+  width: 60px; /* Larger timer */
+  height: 60px;
+  border-radius: 50%;
+  background: conic-gradient(#00ffdd var(--progress), #374151 0);
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font-weight: bold;
+  color: #1a1a1a; /* Darker text for contrast */
+  font-size: 1.2rem;
+  box-shadow: 0 0 15px rgba(0, 255, 221, 0.4);
+  animation: timer-glow 1s infinite alternate; /* Timer glow */
+  position: relative;
+  z-index: 1;
 }
 
-.App-link {
-  color: #61dafb;
+.quiz-question-text {
+  font-size: 1.3rem; /* Larger text */
+  color: #f0f0f0;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
 }
 
-@keyframes App-logo-spin {
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px; /* Increased gap */
+}
+
+@media (min-width: 600px) {
+  .quiz-options {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  padding: 18px; /* Larger padding */
+  border: 2px solid rgba(0, 255, 255, 0.3); /* Neon border */
+  border-radius: 15px; /* More rounded */
+  background: rgba(255, 255, 255, 0.07); /* Slightly more transparent */
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden; /* For inner effects */
+  z-index: 1; /* Ensure options are clickable */
+}
+
+.quiz-option:hover {
+  border-color: #00ffff; /* Brighter neon on hover */
+  background-color: rgba(0, 255, 255, 0.15);
+  transform: translateY(-7px) scale(1.02); /* More lift and scale */
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); /* Stronger glow */
+}
+
+.quiz-option-selected {
+  border-color: #00ffdd;
+  background-color: rgba(0, 255, 221, 0.25);
+  box-shadow: 0 0 25px rgba(0, 255, 221, 0.7); /* Even stronger glow for selected */
+  transform: translateY(-5px) scale(1.01);
+}
+
+.quiz-radio {
+  display: none; /* Hide default radio */
+}
+
+.quiz-option-text {
+  margin-left: 15px; /* More spacing */
+  font-size: 1.1rem;
+  color: #ffffff;
+  flex-grow: 1; /* Allow text to take available space */
+  position: relative;
+  z-index: 1; /* Ensure text is above custom radio ::before */
+}
+
+/* Custom radio button styling */
+.quiz-option::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #00eaff;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: all 0.3s ease;
+    flex-shrink: 0; /* Prevent shrinking */
+    position: relative;
+    z-index: 0; /* Keep behind text */
+}
+
+.quiz-radio:checked + .quiz-option-text::before { /* This rule is incorrect. It should target the ::before of the .quiz-option itself when the radio is checked. */
+    /* This rule below is for the custom radio marker. The existing code uses the sibling combinator (+), but this won't work on the ::before of the text. */
+    /* The correct approach would be: .quiz-radio:checked + .quiz-option::before { ... } */
+    /* I'm correcting this here, assuming the 'quiz-option' is the direct label for the radio. */
+    background-color: #00ffdd;
+    box-shadow: 0 0 12px #00ffdd;
+}
+/* Corrected Custom radio button styling */
+.quiz-option .quiz-radio:checked + .quiz-option-text::before { /* If the label is .quiz-option, and the text is nested */
+    background-color: #00ffdd;
+    box-shadow: 0 0 12px #00ffdd;
+}
+/* A more robust way to handle custom radios is often to place the ::before on the .quiz-option and toggle it with :has() or sibling selector */
+/* For now, I'll rely on ensuring z-index doesn't block the original checkbox/radio click. */
+
+
+/* Results section */
+.quiz-results-title {
+  font-size: 2.8rem;
+  color: #00ffdd;
+  font-weight: bold;
+  margin-bottom: 25px;
+  text-align: center;
+  text-shadow: 0 0 10px #00ffdd, 0 0 20px #00ffdd;
+}
+
+.quiz-score {
+  font-size: 1.4rem;
+  color: #cccccc;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.quiz-score-value {
+  font-weight: bold;
+  color: #00ffdd;
+  font-size: 1.8rem;
+  text-shadow: 0 0 8px #00ffdd;
+}
+
+.quiz-results {
+  display: grid;
+  gap: 20px; /* Increased gap */
+}
+
+.quiz-result {
+  padding: 20px;
+  border-radius: 15px;
+  border: 2px solid;
+  background-color: rgba(255, 255, 255, 0.05); /* Base transparent background */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.quiz-result:hover {
+    transform: translateX(5px);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+}
+
+.quiz-result-correct {
+  border-color: #00ff77; /* Brighter green */
+  background-color: rgba(0, 255, 119, 0.15); /* More vibrant transparent green */
+}
+
+.quiz-result-incorrect {
+  border-color: #ff3366; /* Hotter pink */
+  background-color: rgba(255, 51, 102, 0.15); /* More vibrant transparent pink */
+}
+
+.quiz-result-title,
+.quiz-result-answer,
+.quiz-result-correct,
+.quiz-result-explanation {
+  color: #ffffff;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.quiz-result-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #00eaff;
+}
+
+.quiz-result-answer {
+    font-weight: 600;
+}
+
+.quiz-result-correct-answer {
+    color: #00ff77; /* Explicit correct answer color */
+}
+
+.quiz-result-explanation {
+  font-size: 1rem;
+  color: #b0b0b0;
+  font-style: italic;
+  padding-left: 10px;
+  border-left: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.quiz-error {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: rgba(255, 51, 102, 0.1); /* Lighter error background */
+  border: 2px solid #ff0044;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: shake 0.5s ease-out;
+  box-shadow: 0 0 15px rgba(255, 0, 68, 0.5);
+  position: relative;
+  z-index: 3;
+}
+
+.quiz-error-text {
+  font-size: 1.05rem;
+  color: #ff3366;
+  font-weight: 600;
+}
+
+.quiz-error-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem; /* Larger close button */
+  color: #ff0044;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+  z-index: 4; /* Ensure close button is clickable */
+}
+
+.quiz-error-close:hover {
+  color: #ff0000;
+  transform: rotate(90deg); /* Spin on hover */
+}
+
+/* =================== AUTHENTICATION STYLES =================== */
+.login-container,
+.register-container {
+    max-width: 450px; /* Slightly wider for auth */
+    margin: 60px auto;
+    padding: 50px;
+    z-index: 5;
+}
+
+.login-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #00eaff;
+    text-shadow: 0 0 10px #00eaff;
+}
+
+/* Auth Tabs */
+.auth-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* More spacing */
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-tab {
+    color: #00eaff;
+    font-weight: bold;
+    font-size: 1.2rem;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: 5px;
+    z-index: 1;
+}
+
+.auth-tab::after {
+    content: "";
+    position: absolute;
+    bottom: -8px; /* Lower position */
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: #00ffdd;
+    box-shadow: 0 0 15px rgba(0, 255, 221, 0.6);
+    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 0;
+}
+
+.auth-tab:hover::after,
+.auth-tab.active::after {
+    width: 100%;
+}
+
+.auth-tab.active {
+    color: #00ffdd;
+    text-shadow: 0 0 10px #00ffdd;
+}
+
+/* =================== RESPONSIVE - ADAPTIVE INTERFACE =================== */
+@media (max-width: 768px) {
+  .App {
+    padding: 30px 15px;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .upload-container,
+  .form-container,
+  .quiz-container,
+  .login-container,
+  .register-container {
+    padding: 30px 20px;
+    margin: 30px auto;
+  }
+
+  .quiz-title {
+    font-size: 2.2rem;
+  }
+
+  .quiz-question-title {
+    font-size: 1.5rem;
+  }
+
+  .quiz-question-text {
+    font-size: 1.1rem;
+  }
+
+  .quiz-options {
+    grid-template-columns: 1fr; /* Stack options on smaller screens */
+  }
+
+  .quiz-results-title {
+    font-size: 2rem;
+  }
+
+  .quiz-score-value {
+    font-size: 1.5rem;
+  }
+
+  .auth-tabs {
+      flex-direction: column;
+      gap: 15px;
+  }
+}
+
+/* =================== ANIMATIONS - DYNAMIC VISUALS =================== */
+@keyframes neon-flicker-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    filter: brightness(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0) scale(1.01);
+    filter: brightness(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes slide-in-bottom {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(40px) perspective(500px) rotateX(-10deg);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0) perspective(500px) rotateX(0deg);
   }
 }
+
+@keyframes pulse-neon {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(0, 255, 221, 0.5);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 30px rgba(0, 255, 221, 0.8), 0 0 40px rgba(0, 255, 221, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(0, 255, 221, 0.5);
+  }
+}
+
+@keyframes neon-text-glow {
+  0% {
+    text-shadow: 0 0 5px #00ffdd, 0 0 15px #00ffdd;
+  }
+  100% {
+    text-shadow: 0 0 15px #00ffdd, 0 0 25px #00ffdd, 0 0 40px #00ffdd;
+  }
+}
+
+@keyframes timer-glow {
+    0% {
+        box-shadow: 0 0 8px rgba(0, 255, 221, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(0, 255, 221, 0.8);
+    }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+@keyframes grid-pulse {
+    0% { opacity: 0.1; }
+    50% { opacity: 0.15; }
+    100% { opacity: 0.1; }
+}
+.ask-text-glow {
+  color: #aaffff; /* A bright, ethereal cyan */
+  font-size: 1.6rem; /* Slightly larger for emphasis */
+  font-weight: 600; /* Semi-bold */
+  text-shadow: 
+    0 0 8px rgba(170, 255, 255, 0.6), /* Primary glow */
+    0 0 20px rgba(170, 255, 255, 0.3), /* Secondary, wider glow */
+    0 0 30px rgba(170, 255, 255, 0.1); /* Tertiary, very wide glow */
+  transition: text-shadow 0.3s ease-in-out; /* Smooth transition for hover effects */
+}
+
+/* Optional: Add a subtle animation or hover effect */
+.ask-text-glow:hover {
+  text-shadow: 
+    0 0 12px rgba(170, 255, 255, 0.8), 
+    0 0 25px rgba(170, 255, 255, 0.5),
+    0 0 40px rgba(170, 255, 255, 0.2);
+}
+/* Optional: Import a cyberpunk-style font from Google Fonts */
+/* @import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap'); */
